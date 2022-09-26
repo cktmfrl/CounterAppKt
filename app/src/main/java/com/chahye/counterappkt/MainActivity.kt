@@ -6,25 +6,27 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-    private var count = 0
+
+    val viewModel by viewModels<MainViewModel>() // 코틀린 확장함수 사용
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        count_text_view.text = "$count"
+        count_text_view.text = "${viewModel.count}"
 
         add_button.setOnClickListener {
-            count++
-            count_text_view.text = "$count"
+            viewModel.count++
+            count_text_view.text = "${viewModel.count}"
         }
 
         sub_button.setOnClickListener {
-            count--
-            count_text_view.text = "$count"
+            viewModel.count--
+            count_text_view.text = "${viewModel.count}"
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
