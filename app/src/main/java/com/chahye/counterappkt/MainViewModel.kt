@@ -12,7 +12,7 @@ class MainViewModel(private val handle: SavedStateHandle) : ViewModel() {
         set(value) {
             field = value
             countLiveData.value = value
-            handle.set("count", value)
+            handle["count"] = value
         }
 
     val countLiveData = MutableLiveData<Int>()
