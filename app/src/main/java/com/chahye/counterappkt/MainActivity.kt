@@ -1,13 +1,10 @@
 package com.chahye.counterappkt
 
-import android.app.Activity
-import android.app.Application
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
-import androidx.lifecycle.Observer
+import androidx.databinding.DataBindingUtil
+import com.chahye.counterappkt.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -16,55 +13,18 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        // UI 갱신
-        viewModel.countLiveData.observe(this, Observer { count ->
-            count_text_view.text = "$count"
-        })
+        // UI 갱신 -> DataBinding 적용
+        val binding = DataBindingUtil.setContentView<ActivityMainBinding>(
+            this, R.layout.activity_main
+        )
+
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
 
         add_button.setOnClickListener {
             viewModel.increaseCount()
         }
-
-        sub_button.setOnClickListener {
-            viewModel.decreaseCount()
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            registerActivityLifecycleCallbacks(object: Application
-            .ActivityLifecycleCallbacks {
-                override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-                    Log.d(TAG, "onActivityCreated: ")
-                }
-
-                override fun onActivityStarted(activity: Activity) {
-                    Log.d(TAG, "onActivityStarted: ")
-                }
-
-                override fun onActivityResumed(activity: Activity) {
-                    Log.d(TAG, "onActivityResumed: ")
-                }
-
-                override fun onActivityPaused(activity: Activity) {
-                    Log.d(TAG, "onActivityPaused: ")
-                }
-
-                override fun onActivityStopped(activity: Activity) {
-                    Log.d(TAG, "onActivityStopped: ")
-                }
-
-                override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
-                    Log.d(TAG, "onActivitySaveInstanceState: ")
-                }
-
-                override fun onActivityDestroyed(activity: Activity) {
-                    Log.d(TAG, "onActivityDestroyed: ")
-                }
-
-            })
-        }
-
     }
 
     // 시스템에 의한 종료 시 UI 상태 유지
