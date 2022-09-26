@@ -5,16 +5,18 @@ import androidx.lifecycle.ViewModel
 
 class MainViewModel: ViewModel() {
     private var count = 0
+        set(value) {
+            countLiveData.value = value
+            field = value
+        }
 
     val countLiveData = MutableLiveData<Int>()
 
     fun increaseCount() {
         count++
-        countLiveData.value = count
     }
 
     fun decreaseCount() {
-        count++
-        countLiveData.value = count
+        count--
     }
 }
